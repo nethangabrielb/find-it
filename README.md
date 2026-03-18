@@ -1,23 +1,20 @@
-# Eye Spy
+# Find it
 
 > A fullstack "Where's Waldo"-style web game with timed rounds, click-based character validation, and per-scene leaderboards.
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/nethangabrielb/eye-spy)
 ![GitHub repo size](https://img.shields.io/github/repo-size/nethangabrielb/eye-spy)
-![License](https://img.shields.io/github/license/nethangabrielb/eye-spy)
-![Status](https://img.shields.io/badge/status-active-brightgreen)
 
 ## 🚀 Live Demo
 
-**Frontend (Vercel):** Configure your deployed URL here  
-**Backend (Render):** https://wheres-waldo-backend-jwgd.onrender.com/health
+[Live preview](https://eye-spy-fawn.vercel.app/)
 
 > 💡 **Test Credentials**  
 > Not required. This project does not use account authentication for gameplay.
 
 ## 📖 About the Project
 
-Eye Spy is a fullstack image-tagging game inspired by classic "find the hidden character" puzzles. Players pick one of three scenes, click on a suspected location in the image, and then choose the character they think they found. The app validates that click against predefined coordinate ranges stored in PostgreSQL and immediately returns success/failure feedback.
+Find it is a fullstack image-tagging game inspired by classic "find the hidden character" puzzles. Players pick one of three scenes, click on a suspected location in the image, and then choose the character they think they found. The app validates that click against predefined coordinate ranges stored in PostgreSQL and immediately returns success/failure feedback.
 
 The frontend is built with React and React Router, with a game loop that tracks found characters, runs a timer, and submits final scores. The backend is an Express API that serves scenes/characters, validates click coordinates, and stores leaderboard entries. Prisma is used as the database access layer, and Supabase Storage hosts image assets.
 
@@ -25,16 +22,29 @@ This project is designed for people who enjoy lightweight browser games and for 
 
 ### Why I Built This
 
-I wanted to build a polished fullstack game project that combines frontend interaction design with backend validation logic. A "Where's Waldo" mechanic is a great fit because it requires meaningful coordination between UI click events, image scaling math, and API validation.
+I wanted to build a polished fullstack game project that combines frontend interaction
+design with backend validation logic. A "Where's Waldo" mechanic is a great fit because
+it requires meaningful coordination between UI click events, image scaling math, and API
+validation.
+
+> 📚 Built in partial fulfillment of [The Odin Project – Where's Waldo (A Photo Tagging App)](https://www.theodinproject.com/lessons/nodejs-where-s-waldo-a-photo-tagging-app)
+> project assignment.
 
 ### What I Learned
 
-- How to normalize click coordinates from rendered image dimensions to intrinsic image dimensions before backend validation.
-- How to model scene, character, and score relationships cleanly with Prisma.
-- How to structure route-driven gameplay in React with reusable hooks and shared outlet context.
-- How to test coordinate validation behavior using Jest + Supertest across multiple scene datasets.
+- How to translate raw UI click events into validated game logic — bridging frontend
+  interaction design with backend coordinate checking.
+- How to normalize click coordinates from rendered image dimensions to intrinsic image
+  dimensions before backend validation, solving the cross-screen-size consistency
+  problem the assignment specifically calls out.
+- How to model scene, character, and score relationships cleanly with Prisma, including
+  anonymous user session tracking for the leaderboard.
+- How to structure route-driven gameplay in React with reusable hooks and shared outlet
+  context.
+- How to test coordinate validation behavior using Jest + Supertest across multiple
+  scene datasets.
 
-## ✨ Features
+## Features
 
 - [x] Scene selection - Choose from Gamerverse, 5 Days, and Universe 11.
 - [x] Click-to-find gameplay - Click image locations and map selections to characters.
@@ -44,10 +54,8 @@ I wanted to build a polished fullstack game project that combines frontend inter
 - [x] Leaderboards - Fastest times are stored and displayed per scene.
 - [x] Duplicate-name guard - Prevents duplicate player names per photo leaderboard.
 - [x] API health endpoint - Keeps backend responsive for uptime monitoring.
-- [ ] Global leaderboard - Planned cross-scene ranking view.
-- [ ] Optional auth profiles - Planned player history and profile stats.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 
@@ -78,7 +86,7 @@ I wanted to build a polished fullstack game project that combines frontend inter
 - **GitHub Actions** - Scheduled keep-alive workflow for backend health ping
 - **Jest + Supertest** - Integration tests for coordinate validation endpoints
 
-## 🏗️ Architecture
+## Architecture
 
 ```text
 Browser (React + Vite)
@@ -106,7 +114,7 @@ Supabase Storage (public URLs)
 
 The frontend handles interaction and timer state, while the backend owns authoritative validation and score persistence. Click positions are normalized in the client to avoid mismatch between displayed and original image dimensions.
 
-## ⚙️ Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -160,7 +168,7 @@ Optional frontend variable if you decide to make API base URL configurable:
 VITE_API_URL=http://localhost:5000
 ```
 
-## 📡 API Reference
+## API Reference
 
 Base URL (local): `http://localhost:5000`  
 Base URL (deployed backend): `https://wheres-waldo-backend-jwgd.onrender.com`
@@ -175,7 +183,7 @@ Base URL (deployed backend): `https://wheres-waldo-backend-jwgd.onrender.com`
 | POST   | `/photos/:photoId`       | Validate click coordinates against a selected character |      ❌       |
 | POST   | `/photos/:photoId/users` | Submit a username + score for leaderboard               |      ❌       |
 
-## 📁 Folder Structure
+## Folder Structure
 
 ```text
 .
@@ -201,15 +209,13 @@ Base URL (deployed backend): `https://wheres-waldo-backend-jwgd.onrender.com`
     └── public/                         # Static assets (audio/icons)
 ```
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [x] Multi-scene gameplay with character validation
 - [x] Per-scene leaderboard persistence
 - [x] Integration tests for coordinate validation
-- [ ] Add frontend API URL env configuration (`VITE_API_URL`)
-- [ ] Add global leaderboard across all scenes
-- [ ] Improve backend error handling/status codes for validation responses
-- [ ] Add CI test workflow for pull requests
+- [x] Add global leaderboard across all scenes
+- [x] Improve backend error handling/status codes for validation responses
 - [ ] Add richer analytics (average times, attempt counts)
 
 ## 🤝 Contributing
@@ -224,23 +230,3 @@ This is a personal project, but feedback and suggestions are welcome.
 
 Please check open issues before submitting a PR.
 
-## 📄 License
-
-Distributed under the **ISC** License. See `LICENSE` for more information.
-
-## 📬 Contact
-
-**Nethan Gabriel B.**
-
-- Portfolio: [https://your-portfolio-url.com](https://your-portfolio-url.com)
-- GitHub: [@nethangabrielb](https://github.com/nethangabrielb)
-- LinkedIn: [linkedin.com/in/your-linkedin-username](https://linkedin.com/in/your-linkedin-username)
-- Email: [your-email@example.com](mailto:your-email@example.com)
-
-## 🙏 Acknowledgements
-
-- [Prisma](https://www.prisma.io/) - ORM and migration tooling
-- [Supabase](https://supabase.com/) - Managed Postgres and asset storage
-- [Render](https://render.com/) - Backend hosting
-- [Vercel](https://vercel.com/) - Frontend deployment platform
-- [Jest](https://jestjs.io/) and [Supertest](https://github.com/ladjs/supertest) - Endpoint testing stack
