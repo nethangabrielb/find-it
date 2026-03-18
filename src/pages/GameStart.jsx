@@ -6,6 +6,15 @@ import useTimer from "easytimer-react-hook";
 import server from "../services/API";
 import { useNavigate } from "react-router-dom";
 
+const pad2 = (n) => String(n ?? 0).padStart(2, "0");
+
+const formatClock = (timeValues) => {
+  const h = Number(timeValues?.hours ?? 0);
+  const m = Number(timeValues?.minutes ?? 0);
+  const s = Number(timeValues?.seconds ?? 0);
+  return h > 0 ? `${pad2(h)}:${pad2(m)}:${pad2(s)}` : `${pad2(m)}:${pad2(s)}`;
+};
+
 const GameStart = () => {
   let { game, setGame } = useOutletContext();
   const [gameLocalStorage, setGameLocalStorage] = useState(game);
@@ -35,18 +44,22 @@ const GameStart = () => {
       const timeValue = timer.getTimeValues();
 
       // Set the timer value and set game to over
+      const totalSeconds =
+        timeValue.seconds + timeValue.minutes * 60 + timeValue.hours * 60 * 60;
       const duration = intervalToDuration({
         start: 0,
-        end: (timeValue.seconds + timeValue.minutes * 60) * 1000,
+        end: totalSeconds * 1000,
       });
 
-      const zeroPad = (num) => (num ? String(num).padStart(2, "0") : "00");
+      const formatted =
+        duration.hours && duration.hours > 0
+          ? `${pad2(duration.hours)}:${pad2(duration.minutes)}:${pad2(
+              duration.seconds
+            )}`
+          : `${pad2(duration.minutes)}:${pad2(duration.seconds)}`;
       setTimerValue({
-        seconds:
-          timeValue.minutes > 0
-            ? timeValue.seconds + timeValue.minutes * 60
-            : timeValue.seconds,
-        formatted: `${zeroPad(duration.minutes)}:${zeroPad(duration.seconds)}`,
+        seconds: totalSeconds,
+        formatted,
       });
       if (allCharactersFound) {
         formRef.current.focus();
@@ -115,7 +128,7 @@ const GameStart = () => {
               Time
             </div>
             <div className="sm:p-4 border border-last/15 rounded-2xl sm:px-8 px-3 p-2 text-2xl sm:text-4xl font-extrabold tracking-tight bg-main/60 shadow-[0_14px_45px_rgba(0,0,0,0.10)]">
-              {timer.getTimeValues().minutes}:{timer.getTimeValues().seconds}
+              {formatClock(timer.getTimeValues())}
             </div>
           </div>
         </div>
@@ -134,7 +147,10 @@ const GameStart = () => {
           <form
             className="relative text-base sm:text-lg border border-last/15 p-5 sm:p-7 flex flex-col items-center gap-3 rounded-3xl w-full max-w-md bg-main shadow-[0_24px_80px_rgba(0,0,0,0.30)]"
             ref={formRef}
-            action={submitUserHandler}
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitUserHandler();
+            }}
           >
             <p className="text-center text-last font-extrabold text-2xl sm:text-3xl tracking-tight">
               Nice work!

@@ -68,10 +68,8 @@ const Photo = ({ game, setGameLocalStorage, setAllCharactersFound }) => {
       audioRef.current.play();
 
       // Check if all characters are found
-      // By filtering the updated characters array and filtering by isFound attribute
-      // So if the length is 3, it means all 3 are found, and we stop the timer.
-      const isAllFound = updatedCharactersStatus.filter((char) => char.isFound);
-      if (isAllFound.length === 3) {
+      const isAllFound = updatedCharactersStatus.every((char) => char.isFound);
+      if (isAllFound) {
         setAllCharactersFound(true);
       }
     } else {
