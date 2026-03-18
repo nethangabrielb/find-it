@@ -84,12 +84,12 @@ const Photo = ({ game, setGameLocalStorage, setAllCharactersFound }) => {
   };
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full w-full flex justify-center">
       <img
         src={game.url}
         alt="Where's Waldo photo"
         onClick={handlePhotoClick}
-        className="w-full h-full max-w-[1400px] rounded-lg"
+        className="w-full h-full max-w-[1400px] rounded-3xl shadow-[0_18px_60px_rgba(0,0,0,0.22)] border border-last/15 bg-main"
         ref={photoRef}
       />
       {openDropdown && (

@@ -9,14 +9,21 @@ const LeaderBoard = () => {
 
   useEffect(() => {
     setGames(games);
-  }, [games]);
+  }, [games, setGames]);
 
   return (
     <>
-      <h1>Leaderboard</h1>
-      <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))]  w-full gap-10">
+      <div className="flex flex-col items-center gap-3 text-center">
+        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-last">
+          Leaderboards
+        </h1>
+        <p className="text-base sm:text-lg text-tertiary/80 max-w-2xl">
+          Fastest times per scene. Can you make the top spot?
+        </p>
+      </div>
+      <div className="h-px w-full bg-last/10 my-2" />
+      <div className="grid grid-cols-[repeat(auto-fit,_minmax(300px,_1fr))] w-full gap-8 sm:gap-10">
         {games.map((game) => {
-          console.log(game);
           return <Board game={game} key={game.id}></Board>;
         })}
       </div>

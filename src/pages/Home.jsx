@@ -9,14 +9,14 @@ const Home = () => {
   const [game, setGame] = useState({});
 
   return (
-    <div className="h-full flex flex-col bg-main text-tertiary">
+    <div className="min-h-[100svh] flex flex-col bg-main text-tertiary">
       <Header></Header>
-      <main className="flex flex-col items-center text-4xl lg:p-10 p-4 gap-10 bg-main text-tertiary flex-auto relative">
+      <main className="flex flex-col items-center lg:p-10 p-4 gap-10 bg-main text-tertiary flex-auto relative w-full">
         {loading ? (
-          <div className="flex flex-row gap-4 items-center border rounded-lg p-4 bg-secondary text-last text-lg my-auto">
+          <div className="flex flex-row gap-4 items-center border border-last/15 rounded-2xl p-5 bg-secondary text-last text-lg my-auto shadow-[0_16px_40px_rgba(0,0,0,0.14)]">
             <svg
               aria-hidden="true"
-              class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-main"
+              className="w-8 h-8 text-last/30 animate-spin fill-main"
               viewBox="0 0 100 101"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -30,10 +30,15 @@ const Home = () => {
                 fill="currentFill"
               />
             </svg>
-            <p>Fetching data... please wait</p>
+            <div className="flex flex-col">
+              <p className="font-semibold">Loading games</p>
+              <p className="text-sm opacity-80">Fetching data… please wait</p>
+            </div>
           </div>
         ) : (
-          <Outlet context={{ games, game, setGame, setGames, loading }} />
+          <div className="w-full max-w-6xl">
+            <Outlet context={{ games, game, setGame, setGames, loading }} />
+          </div>
         )}
       </main>
       <Footer></Footer>

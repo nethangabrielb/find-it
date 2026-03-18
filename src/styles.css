@@ -1,5 +1,45 @@
 @import "tailwindcss";
 
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    min-height: 100svh;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+      Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    background: radial-gradient(
+        1200px 600px at 20% 0%,
+        color-mix(in oklab, var(--color-secondary) 22%, transparent),
+        transparent 60%
+      ),
+      radial-gradient(
+        900px 520px at 85% 15%,
+        color-mix(in oklab, var(--color-tertiary) 18%, transparent),
+        transparent 55%
+      ),
+      var(--color-main);
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-secondary) 55%, transparent);
+  }
+
+  :focus-visible {
+    outline: 3px solid color-mix(in oklab, var(--color-secondary) 55%, white);
+    outline-offset: 3px;
+  }
+}
+
 body {
   height: 100svh;
 }

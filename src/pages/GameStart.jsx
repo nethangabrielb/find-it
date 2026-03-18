@@ -19,7 +19,7 @@ const GameStart = () => {
   const formRef = useRef(null);
   const inputRef = useRef(null);
   const navigate = useNavigate();
-  const [timer, isTimerAchieved] = useTimer({});
+  const [timer] = useTimer({});
 
   useEffect(() => {
     if (allCharactersFound === false) {
@@ -59,6 +59,9 @@ const GameStart = () => {
     return () => {
       document.body.style.overflow = "auto";
     };
+    // We intentionally run this effect only when game completion flips,
+    // to avoid restarting/stopping the timer due to unrelated state changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allCharactersFound]);
 
   if (Object.keys(gameLocalStorage).length === 0) {
@@ -84,58 +87,91 @@ const GameStart = () => {
 
   return (
     <>
-      <p className="sm:text-4xl text-xl">Characters to find:</p>
-      <div className="flex gap-10">
-        {Object.keys(gameLocalStorage).length !== 0 &&
-          gameLocalStorage.Character.map((char) => {
-            return (
-              <img
-                src={char.url}
-                key={char.id}
-                id={char.id}
-                className="sm:w-[58px] w-[34px] h-auto"
-              />
-            );
-          })}
-      </div>
-      <div className="sm:p-4 border rounded-lg sm:px-8 px-2 p-2 sm:text-4xl text-xl">
-        {timer.getTimeValues().minutes}:{timer.getTimeValues().seconds}
-      </div>
-      <section className="flex justify-center items-center lg:px-10 sm:py-10 h-full">
+      <section className="w-full flex flex-col gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 w-full">
+          <div className="flex flex-col gap-2">
+            <p className="text-base sm:text-lg text-tertiary/80">
+              Characters to find
+            </p>
+            <div className="flex gap-3 sm:gap-5 items-center">
+              {Object.keys(gameLocalStorage).length !== 0 &&
+                gameLocalStorage.Character.map((char) => {
+                  return (
+                    <img
+                      src={char.url}
+                      key={char.id}
+                      id={char.id}
+                      className="sm:w-[60px] w-[40px] h-auto rounded-xl border border-last/15 bg-main/40 p-1"
+                      alt=""
+                      draggable="false"
+                    />
+                  );
+                })}
+            </div>
+          </div>
+
+          <div className="self-start sm:self-auto flex items-center gap-3">
+            <div className="text-sm sm:text-base text-tertiary/80">
+              Time
+            </div>
+            <div className="sm:p-4 border border-last/15 rounded-2xl sm:px-8 px-3 p-2 text-2xl sm:text-4xl font-extrabold tracking-tight bg-main/60 shadow-[0_14px_45px_rgba(0,0,0,0.10)]">
+              {timer.getTimeValues().minutes}:{timer.getTimeValues().seconds}
+            </div>
+          </div>
+        </div>
+
+        <section className="flex justify-center items-center lg:px-10 sm:py-6 h-full">
         <Photo
           game={gameLocalStorage}
           setGameLocalStorage={setGameLocalStorage}
           setAllCharactersFound={setAllCharactersFound}
         ></Photo>
+        </section>
       </section>
       {allCharactersFound && (
-        <form
-          className="text-lg border p-4 flex flex-col items-center gap-2 rounded-lg absolute w-fit h-fit inset-0 m-auto bg-main"
-          ref={formRef}
-          action={submitUserHandler}
-        >
-          <p>
-            Congratulations! Your score is
-            <span className="font-bold"> {timerValue.formatted}</span>
-          </p>
-          <p className="text-[14px]">
-            Enter name to record your score in the leaderboard
-          </p>
-          <input
-            type="text"
-            className="border p-1"
-            ref={inputRef}
-            value={username}
-            onChange={(e) => setUserName(e.target.value)}
-          />
-          <button
-            className="cursor-pointer py-1 border rounded-lg px-8 bg-secondary"
-            type="submit"
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-last/50 backdrop-blur-sm" />
+          <form
+            className="relative text-base sm:text-lg border border-last/15 p-5 sm:p-7 flex flex-col items-center gap-3 rounded-3xl w-full max-w-md bg-main shadow-[0_24px_80px_rgba(0,0,0,0.30)]"
+            ref={formRef}
+            action={submitUserHandler}
           >
-            Submit
-          </button>
-          {error && <p className="text-red-400">{error}</p>}
-        </form>
+            <p className="text-center text-last font-extrabold text-2xl sm:text-3xl tracking-tight">
+              Nice work!
+            </p>
+            <p className="text-center text-tertiary/80">
+              Your time is{" "}
+              <span className="font-extrabold text-last">
+                {timerValue.formatted}
+              </span>
+            </p>
+            <p className="text-sm text-tertiary/70 text-center">
+              Enter a name to record your score on the leaderboard.
+            </p>
+            <div className="w-full flex flex-col gap-2 pt-1">
+              <label className="text-sm font-semibold text-last" htmlFor="name">
+                Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                className="border border-last/15 rounded-2xl px-3 py-2 bg-white/50 focus:bg-white transition-colors"
+                ref={inputRef}
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
+                placeholder="e.g. Alex"
+                autoComplete="nickname"
+              />
+            </div>
+            <button
+              className="cursor-pointer py-2 border border-last/15 rounded-2xl px-6 bg-secondary text-last font-bold hover:brightness-105 active:scale-[0.99] transition"
+              type="submit"
+            >
+              Submit score
+            </button>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+          </form>
+        </div>
       )}
     </>
   );
