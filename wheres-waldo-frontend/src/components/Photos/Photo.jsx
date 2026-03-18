@@ -26,6 +26,15 @@ const Photo = ({ game, setGameLocalStorage, setAllCharactersFound }) => {
   };
 
   const sendCoordinatesValidation = async (e) => {
+    const characterId = Number(e.currentTarget?.dataset?.characterId);
+    if (!Number.isFinite(characterId)) {
+      setIsCoordinateCorrect(false);
+      setTimeout(() => {
+        setIsCoordinateCorrect(null);
+      }, 1000);
+      return;
+    }
+
     // Get the instrinsic and the rendered w and h of image
     const photo = photoRef.current;
     const renderedVal = { w: photo.clientWidth, h: photo.clientHeight };
@@ -44,13 +53,13 @@ const Photo = ({ game, setGameLocalStorage, setAllCharactersFound }) => {
     // Validate result
     const validationResult = await server.validateCoordinates(
       normalizedCoordinates,
-      e.target.id,
-      game.id
+      characterId,
+      game.id,
     );
 
     if (validationResult) {
       const updatedCharactersStatus = game.Character.map((char) => {
-        if (char.id == e.target.id) {
+        if (char.id === characterId) {
           return { ...char, isFound: true };
         } else {
           return char;
@@ -65,19 +74,21 @@ const Photo = ({ game, setGameLocalStorage, setAllCharactersFound }) => {
       setTimeout(() => {
         setIsCoordinateCorrect(null);
       }, 1000);
-      audioRef.current.play();
 
       // Check if all characters are found
       const isAllFound = updatedCharactersStatus.every((char) => char.isFound);
       if (isAllFound) {
         setAllCharactersFound(true);
       }
+
+      // Audio is rendered conditionally, so it may not exist in this tick.
+      audioRef.current?.play?.();
     } else {
       setIsCoordinateCorrect(false);
       setTimeout(() => {
         setIsCoordinateCorrect(null);
       }, 1000);
-      audioRef.current.play();
+      audioRef.current?.play?.();
     }
   };
 

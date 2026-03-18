@@ -15,6 +15,7 @@ const DropdownMenu = ({
           <button
             key={char.id}
             type="button"
+            data-character-id={char.id}
             className={`relative sm:w-[56px] w-[36px] border-b border-last/15 last:border-b-0 p-1 bg-main/30 ${
               char.isFound
                 ? "cursor-default"
